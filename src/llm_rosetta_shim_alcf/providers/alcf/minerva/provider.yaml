@@ -1,0 +1,11 @@
+name: alcf--minerva
+base: openai_chat
+logo: https://docs.alcf.anl.gov/images/favicon.svg
+
+connection:
+  base_url: https://inference-api.alcf.anl.gov/resource_server/minerva/api/v1
+  api_key_env: ALCF_API_KEY
+  models_path: https://inference-api.alcf.anl.gov/resource_server/minerva/models
+
+tools:
+  custom_tools: true
