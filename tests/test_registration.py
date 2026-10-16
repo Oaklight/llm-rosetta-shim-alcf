@@ -1,15 +1,38 @@
-"""The plugin registers its alcf--* shims through the public shim API."""
+"""The plugin registers its alcf_<cluster>--chat_completions shims via the public shim API."""
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
+import yaml
 
 from llm_rosetta.shims import get_shim
 from llm_rosetta.shims.provider_shim import _reset_registry
 
 from llm_rosetta_shim_alcf import register_shims
 
-_SHIMS = ("alcf--metis", "alcf--minerva", "alcf--sophia")
+_CLUSTERS = ("metis", "minerva", "sophia")
+_SHIMS = tuple(f"alcf_{cluster}--chat_completions" for cluster in _CLUSTERS)
+
+# The three clusters share one admin top level; `display_name` is this shim's own
+# row label inside it (rendered as "<display_name> · chat_completions").
+_GROUP = "alcf"
+_DISPLAY_NAMES = {"metis", "minerva", "sophia"}
+
+_PROVIDERS_DIR = (
+    Path(__file__).resolve().parents[1]
+    / "src"
+    / "llm_rosetta_shim_alcf"
+    / "providers"
+    / "alcf"
+)
+
+
+def _provider_config(cluster: str) -> dict:
+    """The raw ``provider.yaml`` of one cluster, parsed as data."""
+    path = _PROVIDERS_DIR / cluster / "provider.yaml"
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
 @pytest.fixture()
@@ -23,8 +46,25 @@ def _registered():
 def test_registers_alcf_shim(_registered, name):
     shim = get_shim(name)
     assert shim is not None
-    assert shim.base == "openai_chat"
+    assert shim.base == "chat_completions"
     assert shim.connection.base_url.startswith(
         "https://inference-api.alcf.anl.gov/resource_server/"
     )
     assert shim.connection.api_key_env == "ALCF_API_KEY"
+
+
+@pytest.mark.parametrize("cluster", _CLUSTERS)
+def test_provider_yaml_declares_canonical_name_and_grouping(cluster):
+    """``group`` is read from the YAML on purpose: the parent surfaces it on
+    ``ProviderShim`` only as of the 0.16.0 canonical-naming change, so the
+    contract is pinned where the plugin actually declares it."""
+    cfg = _provider_config(cluster)
+    assert cfg["name"] == f"alcf_{cluster}--chat_completions"
+    assert cfg["base"] == "chat_completions"
+    assert cfg["group"] == _GROUP
+    assert cfg["display_name"] == cluster
+
+
+def test_alcf_shims_declare_one_group_and_distinct_labels(_registered):
+    assert {_provider_config(c)["group"] for c in _CLUSTERS} == {_GROUP}
+    assert {get_shim(name).display_name for name in _SHIMS} == _DISPLAY_NAMES
