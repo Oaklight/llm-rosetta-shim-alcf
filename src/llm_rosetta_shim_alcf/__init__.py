@@ -17,7 +17,7 @@ _PROVIDERS_DIR = Path(__file__).parent / "providers"
 
 
 def register_shims() -> None:
-    """Load the bundled ``alcf--*`` shims into llm-rosetta.
+    """Load the bundled ``alcf_<cluster>--chat_completions`` shims into llm-rosetta.
 
     Entry point for the ``llm_rosetta.shim_providers`` group.
     """
