@@ -56,11 +56,12 @@ def test_registers_alcf_shim(_registered, name):
 @pytest.mark.parametrize("cluster", _CLUSTERS)
 def test_provider_yaml_declares_canonical_name_and_grouping(cluster):
     """``group`` is read from the YAML on purpose: the parent surfaces it on
-    ``ProviderShim`` only as of the 0.16.0 canonical-naming change, so the
-    contract is pinned where the plugin actually declares it."""
+    ``ProviderShim`` only in current releases, so the contract is pinned where
+    the plugin actually declares it."""
     cfg = _provider_config(cluster)
     assert cfg["name"] == f"alcf_{cluster}--chat_completions"
-    assert cfg["base"] == "chat_completions"
+    assert cfg["model_type"] == "llm"
+    assert cfg["format"] == "chat_completions"
     assert cfg["group"] == _GROUP
     assert cfg["display_name"] == cluster
 
