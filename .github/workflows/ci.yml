@@ -24,6 +24,6 @@ jobs:
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           pip install "llm-rosetta @ git+https://github.com/Oaklight/llm-rosetta.git@master"
       - name: Install the shim package
-        run: pip install -e . pytest
+        run: pip install -e . pytest pyyaml
       - name: Run tests
         run: pytest tests -q
