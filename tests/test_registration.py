@@ -69,3 +69,20 @@ def test_provider_yaml_declares_canonical_name_and_grouping(cluster):
 def test_alcf_shims_declare_one_group_and_distinct_labels(_registered):
     assert {_provider_config(c)["group"] for c in _CLUSTERS} == {_GROUP}
     assert {get_shim(name).display_name for name in _SHIMS} == _DISPLAY_NAMES
+
+
+@pytest.mark.parametrize("name", _SHIMS)
+def test_the_credential_exchange_ships_with_the_shim(_registered, name):
+    """A provider needs no ``token_command``: the shim declares one.
+
+    The relative argument is resolved against the provider's own directory by
+    the loader, so this loads the shims for real and checks the script exists —
+    the failure mode is a path that only exists in a source checkout.
+    """
+    shim = get_shim(name)
+    assert shim is not None
+    argv = shim.connection.token_command
+    assert argv is not None and argv[0] == "python3"
+    script = Path(argv[1])
+    assert script.is_absolute() and script.is_file(), argv
+    assert script.name == "token.py"

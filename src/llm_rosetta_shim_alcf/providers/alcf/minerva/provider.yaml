@@ -10,6 +10,9 @@ logo: https://docs.alcf.anl.gov/images/favicon.svg
 connection:
   base_url: https://inference-api.alcf.anl.gov/resource_server/minerva/api/v1
   api_key_env: ALCF_API_KEY
+  # The Globus exchange ships with the shim; a relative argument is
+  # resolved against this provider.yaml's directory.
+  token_command: [python3, ../token.py]
   models_path: https://inference-api.alcf.anl.gov/resource_server/minerva/models
 
 tools:
