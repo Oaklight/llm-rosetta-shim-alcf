@@ -36,7 +36,18 @@ The pre-rename spellings (`alcf--metis`, `alcf--minerva`, `alcf--sophia`) no
 longer resolve; use the canonical names above.
 
 Model ID slugs come from a shared `model_list_transform` (framework-aware filtering).
-The Globus OAuth token helper (`scripts/alcf-token.py`) still lives in llm-rosetta.
+The Globus OAuth exchange ships **with this package**. Each `provider.yaml` declares
+`connection.token_command: [python3, ../token.py]`, so a provider needs no
+`token_command` of its own: log in once, and the gateway runs the exchange at
+startup, on the declared interval and after an upstream 401. A provider that names
+its own `token_command` still wins.
+
+```bash
+python3 -m llm_rosetta_shim_alcf.providers.alcf.token --login   # once, per user
+```
+
+The same module takes `--status` for the token's expiry and `--probe metis` to
+check it against a cluster.
 
 ## Install
 
@@ -50,8 +61,10 @@ the `alcf_<cluster>--chat_completions` shims automatically.
 ## Requirements
 
 - Python >= 3.10
-- `llm-rosetta >= 0.13.0` (needs the plugin shim loader)
-- `ALCF_API_KEY` in the environment at request time
+- `llm-rosetta >= 0.14.0` (the plugin shim loader **and** `connection.token_command`;
+  an older core ignores the key and the provider would start with no credential)
+- No credential in the environment: the shipped exchange mints the token from
+  `~/.globus` (or `--token-file` / `--tokens-dir`)
 
 ## License
 
