@@ -1,0 +1,7 @@
+# Vendor manifest: the credential the three clusters share.  A leaf inherits
+# every field here and may override any of them; a relative ``token_command``
+# argument resolves against this file's directory.
+connection:
+  api_key_env: ALCF_API_KEY
+  # The Globus exchange ships with the shim.
+  token_command: [python3, token.py]
