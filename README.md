@@ -39,7 +39,7 @@ Model ID slugs come from a shared `model_list_transform` (framework-aware filter
 The Globus OAuth exchange ships **with this package**. The vendor manifest
 `providers/alcf/provider.yaml` declares the credential once for all three
 clusters — `connection.api_key_env: ALCF_API_KEY` and
-`connection.token_command: [python3, token.py]`, resolved against the manifest's
+`connection.token_command: [python3, mint_token.py]`, resolved against the manifest's
 own directory — and every leaf inherits it. Log in once, and the gateway runs the
 exchange at startup, on the declared interval and after an upstream 401. A
 provider that names its own `token_command` still wins.

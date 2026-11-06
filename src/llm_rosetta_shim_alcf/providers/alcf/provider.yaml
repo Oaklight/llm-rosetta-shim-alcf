@@ -4,4 +4,4 @@
 connection:
   api_key_env: ALCF_API_KEY
   # The Globus exchange ships with the shim.
-  token_command: [python3, token.py]
+  token_command: [python3, mint_token.py]
