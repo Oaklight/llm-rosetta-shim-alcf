@@ -17,7 +17,7 @@ SCRIPT_PATH = (
     / "llm_rosetta_shim_alcf"
     / "providers"
     / "alcf"
-    / "token.py"
+    / "mint_token.py"
 )
 
 
@@ -128,7 +128,7 @@ def test_status_tokens_dir_requires_json_file(
     if tokens_dir_exists:
         tokens_dir.mkdir()
     monkeypatch.setattr(
-        sys, "argv", ["alcf-token.py", "--status", "--tokens-dir", str(tokens_dir)]
+        sys, "argv", ["mint_token.py", "--status", "--tokens-dir", str(tokens_dir)]
     )
 
     with pytest.raises(SystemExit) as exc_info:
