@@ -85,4 +85,4 @@ def test_the_credential_exchange_ships_with_the_shim(_registered, name):
     assert argv is not None and argv[0] == "python3"
     script = Path(argv[1])
     assert script.is_absolute() and script.is_file(), argv
-    assert script.name == "token.py"
+    assert script.name == "mint_token.py"

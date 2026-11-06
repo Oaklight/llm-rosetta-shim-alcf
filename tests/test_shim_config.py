@@ -88,5 +88,5 @@ def test_the_credential_comes_from_the_vendor_manifest(name):
     assert shim.connection.api_key_env == "ALCF_API_KEY"
     assert shim.connection.token_command is not None
     exchange = shim.connection.token_command[-1]
-    assert exchange.endswith("providers/alcf/token.py")
+    assert exchange.endswith("providers/alcf/mint_token.py")
     assert Path(exchange).is_file()
