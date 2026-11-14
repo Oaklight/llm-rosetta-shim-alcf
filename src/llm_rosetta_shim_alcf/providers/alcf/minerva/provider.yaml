@@ -5,7 +5,7 @@ format: chat_completions
 # is this shim's own label inside it, rendered as "minerva · chat_completions".
 group: alcf
 display_name: minerva
-logo: https://docs.alcf.anl.gov/images/favicon.svg
+logo: https://cdn.jsdelivr.net/gh/saforem2/anl-job-talk@main/docs/assets/anl.svg
 
 connection:
   base_url: https://inference-api.alcf.anl.gov/resource_server/minerva/api/v1
