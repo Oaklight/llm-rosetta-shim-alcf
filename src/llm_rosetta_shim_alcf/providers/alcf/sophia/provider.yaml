@@ -5,7 +5,7 @@ format: chat_completions
 # is this shim's own label inside it, rendered as "sophia · chat_completions".
 group: alcf
 display_name: sophia
-logo: https://cdn.jsdelivr.net/gh/saforem2/anl-job-talk@main/docs/assets/anl.svg
+logo: https://cdn.jsdelivr.net/gh/Oaklight/llm-rosetta-shim-alcf@main/assets/alcf.svg
 
 connection:
   base_url: https://inference-api.alcf.anl.gov/resource_server/sophia/vllm/v1
